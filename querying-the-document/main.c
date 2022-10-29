@@ -6,36 +6,35 @@
 #define MAX_PARAGRAPHS 5
 
 char* kth_word_in_mth_sentence_of_nth_paragraph(char**** document, int k, int m, int n) {
-    return document[n][m][k];
+    return document[n - 1][m - 1][k - 1];
 }
 
 char** kth_sentence_in_mth_paragraph(char**** document, int k, int m) { 
-    return document[m][k];
+    return document[m - 1][k - 1];
 }
 
 char*** kth_paragraph(char**** document, int k) {
-    return document[k];
+    return document[k - 1];
 }
 
 char**** get_document(char* text) {
-    char**** paragraphs = calloc(5, sizeof(char***));
-
     const char* paragraphSeparator = "\n";
     const char* sentenceSeparator = ".";
     const char* wordSeparator = " ";
 
+    int paragraphBuffCount = 0;
+    char*** paragraphBuffer[MAX_PARAGRAPHS];
     char *pr;
     char *p = strtok_r(text, paragraphSeparator, &pr);
-    
     while (p != NULL)
     {
-        printf("Whole paragraph: %s\n", p);
+        int sentenceBuffCount = 0;
+        char** sentenceBuffer[MAX_CHARACTERS];
         char *sr;
         char *s = strtok_r(p, sentenceSeparator, &sr);
         while (s != NULL){
-            printf("Sentence: %s\n", s);
             int wordBuffCounter = 0;
-            char* wordBuffer[100];
+            char* wordBuffer[MAX_CHARACTERS];
             char *wr;
             char *w = strtok_r(s, wordSeparator, &wr);
             while(w != NULL){
@@ -43,15 +42,22 @@ char**** get_document(char* text) {
                 w = strtok_r(NULL, wordSeparator, &wr);
                 wordBuffCounter++;
             }
-            char **wordArray = calloc(wordBuffCounter + 1, sizeof(char*));
-            memccpy(wordArray, wordBuffer, wordBuffCounter + 1, sizeof(char*));
+            char **wordArray = calloc(wordBuffCounter, sizeof(char*));
+            memcpy(wordArray, &wordBuffer, wordBuffCounter * sizeof(char*));
+            sentenceBuffer[sentenceBuffCount] = wordArray;
             s = strtok_r(NULL, sentenceSeparator, &sr);
+            sentenceBuffCount++;
         }
+        char ***sentenceArray = calloc(sentenceBuffCount, sizeof(char**));
+        memcpy(sentenceArray, &sentenceBuffer, sentenceBuffCount * sizeof(char***));
+        paragraphBuffer[paragraphBuffCount] = sentenceArray;
         p = strtok_r(NULL, paragraphSeparator, &pr);
+        paragraphBuffCount++;
     }
     
-
-    return paragraphs;
+    char ****paragraphArray = calloc(paragraphBuffCount, sizeof(char***));
+    memcpy(paragraphArray, &paragraphBuffer, paragraphBuffCount * sizeof(char***));
+    return paragraphArray;
 }
 
 
