@@ -34,12 +34,17 @@ char**** get_document(char* text) {
         char *s = strtok_r(p, sentenceSeparator, &sr);
         while (s != NULL){
             printf("Sentence: %s\n", s);
+            int wordBuffCounter = 0;
+            char* wordBuffer[100];
             char *wr;
             char *w = strtok_r(s, wordSeparator, &wr);
             while(w != NULL){
-                printf("Word: %s\n", w);
+                wordBuffer[wordBuffCounter] = w;
                 w = strtok_r(NULL, wordSeparator, &wr);
+                wordBuffCounter++;
             }
+            char **wordArray = calloc(wordBuffCounter + 1, sizeof(char*));
+            memccpy(wordArray, wordBuffer, wordBuffCounter + 1, sizeof(char*));
             s = strtok_r(NULL, sentenceSeparator, &sr);
         }
         p = strtok_r(NULL, paragraphSeparator, &pr);
