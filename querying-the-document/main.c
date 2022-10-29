@@ -24,12 +24,25 @@ char**** get_document(char* text) {
     const char* sentenceSeparator = ".";
     const char* wordSeparator = " ";
 
-    char *p = strtok(text, paragraphSeparator);
+    char *pr;
+    char *p = strtok_r(text, paragraphSeparator, &pr);
     
     while (p != NULL)
     {
-        printf("%s\n", p);
-        p = strtok(NULL, paragraphSeparator);
+        printf("Whole paragraph: %s\n", p);
+        char *sr;
+        char *s = strtok_r(p, sentenceSeparator, &sr);
+        while (s != NULL){
+            printf("Sentence: %s\n", s);
+            char *wr;
+            char *w = strtok_r(s, wordSeparator, &wr);
+            while(w != NULL){
+                printf("Word: %s\n", w);
+                w = strtok_r(NULL, wordSeparator, &wr);
+            }
+            s = strtok_r(NULL, sentenceSeparator, &sr);
+        }
+        p = strtok_r(NULL, paragraphSeparator, &pr);
     }
     
 
