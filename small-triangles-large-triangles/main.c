@@ -13,14 +13,13 @@ typedef struct triangle triangle;
 struct triangle_square_pair
 {
     triangle tr;
-    float sq;
+    double sq;
 };
 typedef struct triangle_square_pair triangle_square_pair;
 
-float triangle_square(triangle tr){
-    float p = (tr.a + tr.b + tr.c) / 2;
-
-    return sqrtf((p * (p - tr.a) * (p - tr.b) * (p - tr.c)));
+double triangle_square(triangle tr){
+    double p = (double)(tr.a + tr.b + tr.c) / 2;
+    return sqrt(p * (p - tr.a) * (p - tr.b) * (p - tr.c));
 }
 
 void sort_by_area(triangle* tr, int n) {
@@ -46,10 +45,6 @@ void sort_by_area(triangle* tr, int n) {
             }
         }
     }
-
-    for (int i = 0; i < n; i++) {
-		printf("%d %d %d square: %f\n", tr_sq[i].tr.a, tr_sq[i].tr.b, tr_sq[i].tr.c, tr_sq[i].sq);
-	}
 }
 
 int main()
